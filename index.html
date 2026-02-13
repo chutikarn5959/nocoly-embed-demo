@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nocoly Embed Demo</title>
+    <style>
+      body { margin: 0; font-family: system-ui, Segoe UI, Arial; background: #f6f7fb; }
+      .page { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+      .card {
+        width: min(760px, 100%);
+        background: #fff;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 12px 30px rgba(0,0,0,.10);
+      }
+      h1 { margin: 0 0 6px; font-size: 22px; }
+      .muted { color: #667085; margin: 0 0 16px; }
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .box { border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px; }
+      .label { font-size: 12px; color: #6b7280; margin-bottom: 6px; }
+      .value { font-size: 16px; font-weight: 700; }
+      .row { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
+      button {
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1px solid #e5e7eb;
+        cursor: pointer;
+        background: #0ea5e9;
+        color: white;
+        font-weight: 600;
+      }
+      button:hover { filter: brightness(0.95); }
+      .count { width: 70px; text-align: center; font-size: 22px; font-weight: 800; }
+      .footer { margin-top: 14px; font-size: 12px; color: #9ca3af; }
+      @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="card">
+        <h1>✅ Nocoly Embedded Page Demo</h1>
+        <p class="muted">ถ้าเห็นหน้านี้ใน Nocoly แปลว่า External Link → Embed Page ใช้งานได้</p>
+
+        <div class="grid">
+          <div class="box">
+            <div class="label">Current Time</div>
+            <div id="time" class="value">-</div>
+          </div>
+
+          <div class="box">
+            <div class="label">Query Params (ทดสอบส่งค่า)</div>
+            <div id="params" class="value" style="font-size:13px; font-weight:600;">-</div>
+          </div>
+        </div>
+
+        <div class="box" style="margin-top:12px;">
+          <div class="label">Counter</div>
+          <div class="row">
+            <button id="minus">-</button>
+            <div id="count" class="count">0</div>
+            <button id="plus">+</button>
+          </div>
+          <div class="footer">
+            Tip: ลองเปิด URL แบบใส่พารามิเตอร์ เช่น <b>?user=vbix&amp;page=test</b>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // clock
+      function tick() {
+        document.getElementById("time").textContent = new Date().toLocaleString();
+      }
+      tick();
+      setInterval(tick, 1000);
+
+      // params
+      const params = new URLSearchParams(location.search);
+      const pairs = [];
+      for (const [k, v] of params.entries()) pairs.push(`${k}=${v}`);
+      document.getElementById("params").textContent = pairs.length ? pairs.join(" | ") : "(no params)";
+
+      // counter
+      let count = 0;
+      const countEl = document.getElementById("count");
+      function render() { countEl.textContent = count; }
+      document.getElementById("minus").onclick = () => { count--; render(); };
+      document.getElementById("plus").onclick = () => { count++; render(); };
+      render();
+    </script>
+  </body>
+</html>
